@@ -1,0 +1,12 @@
+{% extends "base.html" %}
+
+{% block content %}
+  <h1 style="color:green" >§ERVICE</h1>
+  <p>🚘 Automobiliu servisas jusu paslaugoms 🚘 </p>
+  <p>Šiuo metu:</p>
+  <ul>
+    <li><strong>Atliekamu paslaugu skaicius:</strong> {{ paslaugu_kiekis }}</li>
+    <li><strong>Uzsiregistravusiu automobiliu skaicius:</strong> {{ automobiliu_kiekis }}</li>
+    <li><strong>Atliktu uzsakymu skaicius:</strong> {{ atliktu_uzsakymu_kiekis }}</li>
+  </ul>
+{% endblock %}
