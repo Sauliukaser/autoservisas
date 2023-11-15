@@ -1,4 +1,7 @@
 from django.db import models
+from django.contrib.auth.models import User
+from datetime import date
+from tinymce.models import HTMLField
 
 # Create your models here.
 class Paslaugos(models.Model):
@@ -29,6 +32,8 @@ class Uzsakymas(models.Model):
     id = models.AutoField(primary_key=True)
     date = models.DateField("Data", null=True,blank=True)
     car_id = models.ForeignKey("Automobilis", on_delete=models.SET_NULL,null=True)
+    customer = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, blank=True)
+    due_back = models.DateField('Grazinti iki', null=True, blank=True)
 
     UZSAKYMO_STATUS = (
         ('d', 'Laukiama detaliu'),
@@ -45,13 +50,20 @@ class Uzsakymas(models.Model):
     def __str__(self):
         return f"Uzsakymo ID: {self.id} Automobilio ID: {self.car_id} Data: {self.date} "
 
+    @property
+    def is_overdue(self):
+        if self.due_back and date.today() > self.due_back:
+            return True
+        return False
+
 class Automobilis(models.Model):
     id = models.AutoField(primary_key=True)
     number_plate = models.CharField("Valstybinis Nr.",max_length=10)
     car_model_id = models.ForeignKey("AutomobiliuModeliai", on_delete=models.SET_NULL,null=True)
     vin_code = models.CharField("VIN kodas",max_length=20,blank=True)
     cliet = models.CharField("Klientas", max_length=30, help_text="Vardas/Pavarde")
-    cover = models.ImageField('Viršelis', upload_to='covers', null=True)
+    cover = models.ImageField('Viršelis', upload_to='covers', null=True, blank=True)
+    komentaras = HTMLField(blank=True)
     class Meta:
         verbose_name = "Automobilis"
         verbose_name_plural = 'Automobiliai'
@@ -71,3 +83,4 @@ class AutomobiliuModeliai(models.Model):
 
     def __str__(self):
         return f'{self.brand} {self.modelis} {self.variklis} {self.year}'
+

@@ -13,7 +13,7 @@ class UzsakymasInstanceInline(admin.TabularInline):
     extra = 0
     can_delete = False
 class UzsakymasAdmin(admin.ModelAdmin):
-    list_display = ("car_id", "date")
+    list_display = ("car_id", "date", "customer", "due_back")
     inlines = [UzsakymasInstanceInline]
 
 # Register your models here.

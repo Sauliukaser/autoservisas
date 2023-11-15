@@ -3,6 +3,8 @@ from .models import Paslaugos, Automobilis, Uzsakymas, AutomobiliuModeliai
 from django.views import generic
 from django.core.paginator import Paginator
 from django.db.models import Q
+from django.contrib.auth.mixins import LoginRequiredMixin
+
 """paslaugų kiekis, atliktų užsakymų kiekis, automobilių kiekis"""
 def index(request):
     paslaugu_kiekis = Paslaugos.objects.all().count()
@@ -57,4 +59,12 @@ class UzsakymasListView(generic.ListView):
 class UzsakymasDetailView(generic.DetailView):
     model = Uzsakymas
     template_name = 'uzsakymas_detail.html'
+
+class UzsakymaiByCustomerListView(LoginRequiredMixin,generic.ListView):
+    model = Uzsakymas
+    template_name = "customer_order.html"
+    paginate_by = 5
+
+    def get_queryset(self):
+        return Uzsakymas.objects.filter(customer=self.request.user)
 
