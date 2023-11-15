@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+
+{% block content %}
+    <h1>Mano uzsakymai</h1>
+
+    {% if uzsakymas_list %}
+    <ul>
+      {% for x in uzsakymas_list %}
+      <li class="{% if x.is_overdue %}text-danger{% endif %}">
+        {{x.car_id.car_model_id}} ({{ x.due_back }})
+      </li>
+      {% endfor %}
+    </ul>
+
+    {% else %}
+      <p>Šiuo metu?.</p>
+    {% endif %}
+{% endblock %}
