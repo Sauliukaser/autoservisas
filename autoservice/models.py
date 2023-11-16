@@ -84,3 +84,14 @@ class AutomobiliuModeliai(models.Model):
     def __str__(self):
         return f'{self.brand} {self.modelis} {self.variklis} {self.year}'
 
+
+class UzsakymasReview(models.Model):
+    uzsakymas = models.ForeignKey('Uzsakymas', on_delete=models.SET_NULL, null=True, blank=True)
+    reviewer = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, blank=True)
+    date_created = models.DateTimeField(auto_now_add=True)
+    content = models.TextField('Atsiliepimas', max_length=2000)
+
+    class Meta:
+        verbose_name = "Atsiliepimas"
+        verbose_name_plural = 'Atsiliepimai'
+        ordering = ['-date_created']
