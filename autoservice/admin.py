@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Paslaugos, UzsakymoEilute, Uzsakymas, Automobilis, AutomobiliuModeliai, UzsakymasReview
+from .models import Paslaugos, UzsakymoEilute, Uzsakymas, Automobilis, AutomobiliuModeliai, UzsakymasReview, Profilis
 
 class AutomobilisAdmin(admin.ModelAdmin):
     list_display = ("id", "cliet", "car_model_id", "number_plate","vin_code")
@@ -25,3 +25,4 @@ admin.site.register(Uzsakymas,UzsakymasAdmin)
 admin.site.register(Automobilis,AutomobilisAdmin)
 admin.site.register(AutomobiliuModeliai)
 admin.site.register(UzsakymasReview, UzsakymasReviewAdmin)
+admin.site.register(Profilis)

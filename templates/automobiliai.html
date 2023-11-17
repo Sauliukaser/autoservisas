@@ -27,7 +27,7 @@
 <div class="container puslapiai">
     <nav aria-label="...">
         {% if automobiliai.has_other_pages %}
-            <ul class="pagination pagination-sm justify-content-center">
+            <ol class="pagination pagination-sm justify-content-center">
                 {% for i in automobiliai.paginator.page_range %}
                     {% if automobiliai.number == i %}
                         <li class="page-item active">
@@ -39,7 +39,7 @@
                         </li>
                     {% endif %}
                 {% endfor %}
-            </ul>
+            </ol>
         {% endif %}
     </nav>
 </div>

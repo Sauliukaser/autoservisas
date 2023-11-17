@@ -2,6 +2,7 @@ from django.db import models
 from django.contrib.auth.models import User
 from datetime import date
 from tinymce.models import HTMLField
+from PIL import Image
 
 # Create your models here.
 class Paslaugos(models.Model):
@@ -95,3 +96,22 @@ class UzsakymasReview(models.Model):
         verbose_name = "Atsiliepimas"
         verbose_name_plural = 'Atsiliepimai'
         ordering = ['-date_created']
+
+class Profilis(models.Model):
+    user = models.OneToOneField(User, on_delete=models.CASCADE)
+    nuotrauka = models.ImageField(default="profile_pics/default.png", upload_to="profile_pics")
+
+
+    class Meta:
+        verbose_name = "Profilis"
+        verbose_name_plural = 'Profiliai'
+    def __str__(self):
+        return f"{self.user.username} profilis"
+
+    def save(self, *args, **kwargs):
+        super().save(*args, **kwargs)
+        img = Image.open(self.nuotrauka.path)
+        if img.height > 300 or img.width > 300:
+            output_size = (300, 300)
+            img.thumbnail(output_size)
+            img.save(self.nuotrauka.path)

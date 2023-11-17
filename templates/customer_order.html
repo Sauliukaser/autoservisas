@@ -6,13 +6,13 @@
     {% if uzsakymas_list %}
     <ul>
       {% for x in uzsakymas_list %}
-      <li class="{% if x.is_overdue %}text-danger{% endif %}">
+      <li class="{% if x.is_overdue %}text-danger{% endif %}"> <img class="rounded-circle" src="{{x.customer.profilis.nuotrauka.url}}">
         {{x.car_id.car_model_id}} ({{ x.due_back }})
       </li>
       {% endfor %}
     </ul>
 
     {% else %}
-      <p>Šiuo metu?.</p>
+      <p>Šiuo metu uzsakymu neturite</p>
     {% endif %}
 {% endblock %}

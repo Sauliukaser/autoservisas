@@ -1,6 +1,6 @@
 from django.shortcuts import render, get_object_or_404, redirect, reverse
 from .models import Paslaugos, Automobilis, Uzsakymas, AutomobiliuModeliai
-from .forms import UzsakymasReviewForm
+from .forms import UzsakymasReviewForm, UserUpdateForm, ProfilisUpdateForm
 from django.views import generic
 from django.core.paginator import Paginator
 from django.db.models import Q
@@ -10,6 +10,7 @@ from django.views.decorators.csrf import csrf_protect
 from django.contrib import messages
 from django.views.generic.edit import FormMixin
 import re
+from django.contrib.auth.decorators import login_required
 
 """paslaugų kiekis, atliktų užsakymų kiekis, automobilių kiekis"""
 def index(request):
@@ -141,3 +142,23 @@ def register(request):
             messages.error(request, 'Slaptažodis turi but 8 simboliu, bent viena didzioji raide ir bent vienas skaicius !')
             return redirect('register')
     return render(request, 'register.html')
+
+@login_required
+def profilis(request):
+    if request.method == "POST":
+        u_form = UserUpdateForm(request.POST, instance=request.user)
+        p_form = ProfilisUpdateForm(request.POST, request.FILES, instance=request.user.profilis)
+        if u_form.is_valid() and p_form.is_valid():
+            u_form.save()
+            p_form.save()
+            messages.success(request, f"Profilis atnaujintas")
+            return redirect('profilis')
+    else:
+        u_form = UserUpdateForm(instance=request.user)
+        p_form = ProfilisUpdateForm(instance=request.user.profilis)
+
+    context = {
+        'u_form': u_form,
+        'p_form': p_form,
+    }
+    return render(request, 'profilis.html', context)
