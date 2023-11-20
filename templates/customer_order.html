@@ -1,18 +1,18 @@
 {% extends "base.html" %}
 
 {% block content %}
-    <h1>Mano uzsakymai</h1>
-
-    {% if uzsakymas_list %}
-    <ul>
-      {% for x in uzsakymas_list %}
-      <li class="{% if x.is_overdue %}text-danger{% endif %}"> <img class="rounded-circle" src="{{x.customer.profilis.nuotrauka.url}}">
-        {{x.car_id.car_model_id}} ({{ x.due_back }})
-      </li>
-      {% endfor %}
-    </ul>
-
-    {% else %}
-      <p>Šiuo metu uzsakymu neturite</p>
+    <h1>Mano uzregistruotas automobilis</h1>
+    <hr>
+        <ul>
+        <img class="rounded-circle" src="{{object.customer.profilis.nuotrauka.url}}">
+            <li><strong class="{% if object.is_overdue %}text-danger{% endif %}"> {{ object.car_id.car_model_id }} <br> Gražinimo terminas: <u>{{object.due_back}}</u> </strong>
+        </li>
+        <br/>
+    {% if object.customer == user %}
+        <div>
+            <a class="btn btn-secondary btn-sm mt-1 mb-1" href="{% url 'mano_uzsakymas_update' object.id %}">Redaguoti</a>
+            <a class="btn btn-danger btn-sm mt-1 mb-1" href="{% url 'mano_uzsakymas_delete' object.id %}">Ištrinti</a>
+        </div>
     {% endif %}
+    </ul>
 {% endblock %}
