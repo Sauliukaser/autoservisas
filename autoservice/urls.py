@@ -12,5 +12,9 @@ urlpatterns = [
     path('manouzsakymai/', views.UzsakymaiByCustomerListView.as_view(), name='customer_order'),
     path('register/', views.register, name='register'),
     path('profilis/', views.profilis, name='profilis'),
+    path('manouzsakymai/<int:pk>', views.UzsakymasByCustomerDetailView.as_view(), name="mano_uzsakymas"),
+    path("manouzsakymai/new", views.UzsakymasByCustomerCreateView.as_view(), name="mano_uzsakymas_new"),
+    path("manouzsakymai/<int:pk>/update", views.UzsakymasByCustomerUpdateView.as_view(), name="mano_uzsakymas_update"),
+    path("manouzsakymai/<int:pk>/delete", views.UzsakymasByCustomerDeleteView.as_view(), name="mano_uzsakymas_delete"),
 
 ]

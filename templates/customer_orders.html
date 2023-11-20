@@ -1,0 +1,34 @@
+{% extends "base.html" %}
+
+{% block content %}
+    <h1>Mano uzsakymai</h1>
+    {% if automobiliai %}
+    <ul>
+      {% for x in automobiliai %}
+      <li class="{% if x.is_overdue %}text-danger{% endif %}"> <img class="rounded-circle" src="{{x.customer.profilis.nuotrauka.url}}">
+        {{x.car_id.car_model_id}} ({{ x.due_back }})
+      </li>
+        <a class="btn btn-primary" href="{{ x.id }}" role="button">Peržiūrėti</a>
+      {% endfor %}
+    </ul>
+    {% else %}
+      <p>Šiuo metu uzsakymu neturite</p>
+    {% endif %}
+{% endblock %}
+
+<!--{# block content #}-->
+<!--    <h1>Mano uzsakymai</h1>-->
+
+<!--    {# if uzsakymas_list #}-->
+<!--    <ul>-->
+<!--      {# for x in uzsakymas_list #}-->
+<!--      <li class="{% if x.is_overdue %}text-danger{% endif %}"> <img class="rounded-circle" src="{{x.customer.profilis.nuotrauka.url}}">-->
+<!--        {{x.car_id.car_model_id}} ({{ x.due_back }})-->
+<!--      </li>-->
+<!--      {# endfor #}-->
+<!--    </ul>-->
+
+<!--    {# else #}-->
+<!--      <p>Šiuo metu uzsakymu neturite</p>-->
+<!--    {# endif #}-->
+<!--{# endblock #}-->

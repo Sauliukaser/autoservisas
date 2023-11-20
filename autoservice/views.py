@@ -1,10 +1,10 @@
 from django.shortcuts import render, get_object_or_404, redirect, reverse
 from .models import Paslaugos, Automobilis, Uzsakymas, AutomobiliuModeliai
-from .forms import UzsakymasReviewForm, UserUpdateForm, ProfilisUpdateForm
+from .forms import UzsakymasReviewForm, UserUpdateForm, ProfilisUpdateForm, CustomerOrderCreateForm, CustomerOrderUpdateForm
 from django.views import generic
 from django.core.paginator import Paginator
 from django.db.models import Q
-from django.contrib.auth.mixins import LoginRequiredMixin
+from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.contrib.auth.forms import User
 from django.views.decorators.csrf import csrf_protect
 from django.contrib import messages
@@ -89,9 +89,10 @@ class UzsakymasDetailView(FormMixin,generic.DetailView):
         return super(UzsakymasDetailView, self).form_valid(form)
 
 
-class UzsakymaiByCustomerListView(LoginRequiredMixin,generic.ListView):
+class UzsakymaiByCustomerListView(LoginRequiredMixin, generic.ListView):
     model = Uzsakymas
-    template_name = "customer_order.html"
+    context_object_name = "automobiliai"
+    template_name = "customer_orders.html"
     paginate_by = 5
 
     def get_queryset(self):
@@ -162,3 +163,46 @@ def profilis(request):
         'p_form': p_form,
     }
     return render(request, 'profilis.html', context)
+
+class UzsakymasByCustomerDetailView(LoginRequiredMixin, generic.DetailView):
+    model = Uzsakymas
+    template_name = 'customer_order.html'
+
+class UzsakymasByCustomerCreateView(LoginRequiredMixin, generic.CreateView):
+    model = Uzsakymas
+    # fields = ["car_id", "due_back"]
+    success_url = "/autoservice/manouzsakymai/"
+    template_name = "customer_uzsakymo_form.html"
+    form_class = CustomerOrderCreateForm
+
+    def form_valid(self, form):
+        form.instance.customer = self.request.user
+        return super().form_valid(form)
+
+
+class UzsakymasByCustomerUpdateView(LoginRequiredMixin, UserPassesTestMixin, generic.UpdateView):
+    model = Uzsakymas
+    # fields = ["car_id", "due_back"]
+    success_url = "/autoservice/manouzsakymai/"
+    template_name = "customer_uzsakymo_form.html"
+    form_class = CustomerOrderUpdateForm
+
+
+    def form_valid(self, form):
+        form.instance.customer = self.request.user
+        return super().form_valid(form)
+
+    def test_func(self):
+        car_id = self.get_object()
+        return self.request.user == car_id.customer
+
+
+class UzsakymasByCustomerDeleteView(LoginRequiredMixin, UserPassesTestMixin, generic.DeleteView):
+    model = Uzsakymas
+    success_url = "/autoservice/manouzsakymai/"
+    template_name = "customer_order_delete.html"
+
+    def test_func(self):
+        car_id = self.get_object()
+        return self.request.user == car_id.customer
+
