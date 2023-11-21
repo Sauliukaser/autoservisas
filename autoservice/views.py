@@ -11,6 +11,7 @@ from django.contrib import messages
 from django.views.generic.edit import FormMixin
 import re
 from django.contrib.auth.decorators import login_required
+from django.utils.translation import gettext as _
 
 """paslaugų kiekis, atliktų užsakymų kiekis, automobilių kiekis"""
 def index(request):
@@ -124,23 +125,25 @@ def register(request):
             if password == password2:
                 # tikriname, ar neužimtas username
                 if User.objects.filter(username=username).exists():
-                    messages.error(request, f'Vartotojo vardas {username} užimtas!')
+                    messages.error(request, _('Username %s already exists!') % username)
                     return redirect('register')
                 else:
                     # tikriname, ar nėra tokio pat email
                     if User.objects.filter(email=email).exists():
-                        messages.error(request, f'Vartotojas su el. paštu {email} jau užregistruotas!')
+                        # messages.error(request, f'Vartotojas su el. paštu {email} jau užregistruotas!')
+                        messages.error(request, _('Email  %s already exists!') % email)
                         return redirect('register')
                     else:
                         # jeigu viskas tvarkoje, sukuriame naują vartotoją
                         User.objects.create_user(username=username, email=email, password=password)
-                        messages.info(request, f'Vartotojas {username} užregistruotas!')
+                        messages.info(request, _('User %s registered!') % username)
                         return redirect('login')
             else:
-                messages.error(request, 'Slaptažodžiai nesutampa!')
+                messages.error(request, ('Passwords do not match!'))
                 return redirect('register')
         else:
-            messages.error(request, 'Slaptažodis turi but 8 simboliu, bent viena didzioji raide ir bent vienas skaicius !')
+            # messages.error(request, 'Slaptažodis turi but 8 simboliu, bent viena didzioji raide ir bent vienas skaicius !')
+            messages.error(request, _('Password must be 8 characters, at least one capital letter and at least one number'))
             return redirect('register')
     return render(request, 'register.html')
 

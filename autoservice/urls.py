@@ -1,4 +1,4 @@
-from django.urls import path
+from django.urls import path, include
 
 from . import views
 
@@ -16,5 +16,5 @@ urlpatterns = [
     path("manouzsakymai/new", views.UzsakymasByCustomerCreateView.as_view(), name="mano_uzsakymas_new"),
     path("manouzsakymai/<int:pk>/update", views.UzsakymasByCustomerUpdateView.as_view(), name="mano_uzsakymas_update"),
     path("manouzsakymai/<int:pk>/delete", views.UzsakymasByCustomerDeleteView.as_view(), name="mano_uzsakymas_delete"),
-
+    path('i18n/', include('django.conf.urls.i18n')),
 ]

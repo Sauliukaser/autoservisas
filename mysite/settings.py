@@ -11,6 +11,7 @@ https://docs.djangoproject.com/en/4.2/ref/settings/
 """
 import os
 from pathlib import Path
+from django.utils.translation import gettext_lazy as _
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -47,6 +48,7 @@ MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
+    'django.middleware.locale.LocaleMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
@@ -115,6 +117,14 @@ USE_I18N = True
 
 USE_TZ = True
 
+LANGUAGES = (
+    ('en-us', _('English')),
+    ('lt', _('Lithuanian')),
+)
+
+LOCALE_PATHS = (
+    'C:/Users/mariu/PycharmProjects/Django_autoservisas/autoservice/locale',
+)
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.2/howto/static-files/
@@ -171,3 +181,5 @@ TINYMCE_DEFAULT_CONFIG = {
     }
 
 CRISPY_TEMPLATE_PACK = 'bootstrap4'
+
+ ##python manage.py makemessages -l lt parasant sita i terminala  sukuria "locale" folderi ir lt ar kita kalba

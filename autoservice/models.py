@@ -3,6 +3,7 @@ from django.contrib.auth.models import User
 from datetime import date
 from tinymce.models import HTMLField
 from PIL import Image
+from django.utils.translation import gettext_lazy as _
 
 # Create your models here.
 class Paslaugos(models.Model):
@@ -59,11 +60,11 @@ class Uzsakymas(models.Model):
 
 class Automobilis(models.Model):
     id = models.AutoField(primary_key=True)
-    number_plate = models.CharField("Valstybinis Nr.",max_length=10)
+    number_plate = models.CharField(_("Number plate"),max_length=10)
     car_model_id = models.ForeignKey("AutomobiliuModeliai", on_delete=models.SET_NULL,null=True)
-    vin_code = models.CharField("VIN kodas",max_length=20,blank=True)
-    cliet = models.CharField("Klientas", max_length=30, help_text="Vardas/Pavarde")
-    cover = models.ImageField('Viršelis', upload_to='covers', null=True, blank=True)
+    vin_code = models.CharField(_("VIN code"),max_length=20,blank=True)
+    cliet = models.CharField(_("Customer"), max_length=30, help_text=_("First name/Last name"))
+    cover = models.ImageField(_('Cover'), upload_to='covers', null=True, blank=True)
     komentaras = HTMLField(blank=True)
     class Meta:
         verbose_name = "Automobilis"
